@@ -22,6 +22,28 @@ There are multiple sites with C++ documentation, but [cppreference](https://en.c
 The website also lists all the container types [here](https://en.cppreference.com/w/cpp/container). As a group, pick a container that was not shown in lecture and look at its documentation. Report out what it is, and what its use cases are. Also, include if you can think of or find a similar container in python.
 
 
+## Exceptions and virtual functions
+
+In C++, a function can throw any data type as an exception. However,
+classes that derive from `std::exception` are typically used.
+
+Look at the documentation for `std::exception` [here](https://en.cppreference.com/w/cpp/error/exception.html).
+
+1. What header do we need to include to use these classes?
+2. What does the `what` function do?
+3. The `what` function is marked as virtual.
+
+Which `what()` function is called in the following example? Why is that desirable?
+
+    try {
+        throw std::runtime_error("This is an error");
+    }
+
+    catch(const std::exception & ex)
+    {
+        std::cout << ex.what();
+    }
+
 ## Raw Pointer Review
 
 An array of N elements can be allocated using the `new` operator
