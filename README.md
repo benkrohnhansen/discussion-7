@@ -1,5 +1,10 @@
 # Discussion 7  
 
+Slides: https://docs.google.com/presentation/d/1pCidvq2lWP_aUdU4vLHB4G1y8t0jJqK0XJgOj5k74u8/edit?slide=id.g40a0bf5c01d_1_0#slide=id.g40a0bf5c01d_1_0
+
+- The slides contain a brief tie-in to a known bioinformatics tool for k-mer counting, Kraken 2 (https://github.com/DerrickWood/kraken2)
+- Please create a slide for your group and answer the following questions
+
 In lecture, we discussed `std::map` as a general-purpose _associative container_. That is, this container associates a _key_ to a _value_. `std::map` is somewhat analogous to a python `dict`, although there is a container that is closer to a `dict` - `std::unordered_map`.
 
 ## Reading C++ documentation
