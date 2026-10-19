@@ -27,11 +27,11 @@ There are multiple sites with C++ documentation, but [cppreference](https://en.c
 The website also lists all the container types [here](https://en.cppreference.com/w/cpp/container). As a group, pick a container that was not shown in lecture and look at its documentation. Report out what it is, and what its use cases are. Also, include if you can think of or find a similar container in python.
 
 
-## Exceptions and virtual functions
+## Exceptions
 
 ### The try/catch pattern
 
-C++ exceptions work a lot like they do in Python: `raise` becomes `throw`, and `try`/`except` becomes `try`/`catch`. Like in Python, a thrown exception skips the rest of the `try` block and jumps to the nearest matching `catch`. If nothing catches it, the program terminates.
+C++ exceptions work a lot like they do in Python: `raise` becomes `throw`, and `try`/`except` becomes `try`/`catch`. A thrown exception skips the rest of the `try` block and jumps to the nearest matching `catch`. If nothing catches it, the program terminates.
 
 ```c++
 double divide(double a, double b)
@@ -52,40 +52,49 @@ catch (const std::runtime_error & ex) {
 
 - `try { ... }` wraps code that might throw.
 - `throw` creates an exception object (here a `std::runtime_error` holding a message) and sends it up.
-- `catch (const std::runtime_error & ex)` catches exceptions of that type. 
+- `catch (const std::runtime_error & ex)` catches exceptions of that type.
+
+The standard exception types live in `<stdexcept>`, so `#include <stdexcept>` if you try these examples yourself.
 
 1. What does this code print? Which lines never run, and why?
-2. Look at the documentation for [`std::exception`](https://en.cppreference.com/w/cpp/error/exception.html). What does the `what()` function do?
+2. What does the `what()` function do?
 
-### Catching the base class
+### Multiple catch blocks
 
-`std::runtime_error`, like all standard exceptions, derives from `std::exception`. So the most common pattern is to catch the base class, which catches any standard exception:
+A `try` can be followed by several `catch` blocks in a row. All of the standard exception types, including `std::runtime_error`, inherit from `std::exception`.
 
 ```c++
 try {
     throw std::runtime_error("This is an error");
 }
+catch (const std::runtime_error & ex) {
+    std::cout << "Caught a runtime_error: " << ex.what() << "\n";
+}
 catch (const std::exception & ex) {
-    std::cout << ex.what();
+    std::cout << "Caught an exception: " << ex.what() << "\n";
 }
 ```
 
-A virtual function is one that a derived class can replace with its own version. This was covered in week 7. [`std::exception::what()`](https://en.cppreference.com/w/cpp/error/exception/what.html) is marked `virtual` and returns a generic string (GCC's says just `"std::exception"`). [`std::runtime_error`](https://en.cppreference.com/w/cpp/error/runtime_error.html) replaces it with a version that returns the message you gave its constructor.
-
-3. Which `what()` is called here? What would print if `what()` were not virtual?
-4. Suppose the `catch` took the exception by value instead: `catch (std::exception ex)`. Copying a derived-class object into a base-class variable keeps only the base-class part. Everything `std::runtime_error` adds on top, like its message, is "sliced" off, leaving a plain `std::exception`. This is called *slicing*. Which `what()` would be called now, and what would print?
+3. What does this code print? Does the second `catch` block run?
+4. Suppose we throw a different exception instead: `throw std::out_of_range("Index too large");`. Does the code still compile? Which `catch` block runs, and what gets printed?
+5. In question 4, the second `catch` declares `ex` as a `const std::exception &`. What type is the object that `ex` actually refers to? Does `ex.what()` print a generic `std::exception` message, or something else?
 
 ## Raw Pointer Review
 
 An array of N elements can be allocated using the `new` operator
 
-    double * a1 = new double[N];
-    double * a2 = new double[N];
+```c++
+double * a1 = new double[N];
+double * a2 = new double[N];
+double * a3 = new double[N];
+```
 
 Elements of the array can then be accessed using the square brackets:
 
-    // First elements of two arrays multiplied, and stored in another array
-    a3[0] = a1[0] * a2[0];
+```c++
+// First elements of two arrays multiplied, and stored in another array
+a3[0] = a1[0] * a2[0];
+```
 
 
 ### Questions
