@@ -24,25 +24,51 @@ The website also lists all the container types [here](https://en.cppreference.co
 
 ## Exceptions and virtual functions
 
-In C++, a function can throw any data type as an exception. However,
-classes that derive from `std::exception` are typically used.
+### The try/catch pattern
 
-Look at the documentation for `std::exception` [here](https://en.cppreference.com/w/cpp/error/exception.html).
+C++ exceptions work a lot like they do in Python: `raise` becomes `throw`, and `try`/`except` becomes `try`/`catch`. Like in Python, a thrown exception skips the rest of the `try` block and jumps to the nearest matching `catch`. If nothing catches it, the program terminates.
 
-1. What header do we need to include to use these classes?
-2. What does the `what` function do?
-3. The `what` function is marked as virtual.
+```c++
+double divide(double a, double b)
+{
+    if (b == 0.0)
+        throw std::runtime_error("Division by zero");
+    return a / b;
+}
 
-Which `what()` function is called in the following example? Why is that desirable?
+try {
+    std::cout << divide(1.0, 0.0) << "\n";
+    std::cout << "Done dividing\n";
+}
+catch (const std::runtime_error & ex) {
+    std::cout << "Caught: " << ex.what() << "\n";
+}
+```
 
-    try {
-        throw std::runtime_error("This is an error");
-    }
+- `try { ... }` wraps code that might throw.
+- `throw` creates an exception object (here a `std::runtime_error` holding a message) and sends it up.
+- `catch (const std::runtime_error & ex)` catches exceptions of that type. 
 
-    catch(const std::exception & ex)
-    {
-        std::cout << ex.what();
-    }
+1. What does this code print? Which lines never run, and why?
+2. Look at the documentation for [`std::exception`](https://en.cppreference.com/w/cpp/error/exception.html). What does the `what()` function do?
+
+### Catching the base class
+
+`std::runtime_error`, like all standard exceptions, derives from `std::exception`. So the most common pattern is to catch the base class, which catches any standard exception:
+
+```c++
+try {
+    throw std::runtime_error("This is an error");
+}
+catch (const std::exception & ex) {
+    std::cout << ex.what();
+}
+```
+
+A virtual function is one that a derived class can replace with its own version. This was covered in week 7. [`std::exception::what()`](https://en.cppreference.com/w/cpp/error/exception/what.html) is marked `virtual` and returns a generic string (GCC's says just `"std::exception"`). [`std::runtime_error`](https://en.cppreference.com/w/cpp/error/runtime_error.html) replaces it with a version that returns the message you gave its constructor.
+
+3. Which `what()` is called here? What would print if `what()` were not virtual?
+4. Suppose the `catch` took the exception by value instead: `catch (std::exception ex)`. Copying a derived-class object into a base-class variable keeps only the base-class part. Everything `std::runtime_error` adds on top, like its message, is "sliced" off, leaving a plain `std::exception`. This is called *slicing*. Which `what()` would be called now, and what would print?
 
 ## Raw Pointer Review
 
@@ -59,7 +85,7 @@ Elements of the array can then be accessed using the square brackets:
 
 ### Questions
 1. Given the above allocations, how would you free them when you are done with them?
-2. What's the difference between `double * vec = new double[N]` and `double vec[N]`?
+2. What's the difference between `double * arr = new double[N]` and `double arr[N]`?
 
 
 ## Pointer Arithmetic
