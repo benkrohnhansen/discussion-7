@@ -155,7 +155,7 @@ Given a C-style array and `std::vector` below:
 
 The dot product of two vectors is computed by summing the product of each element. The result is a single number
 
-![Dot product](./assets/dot_product.png)
+![Dot product](./dot_product_components.png)
 
 We can do this a few different ways using the standard library. Write the code for doing the dot product
 of the above array and vector the following to ways.
