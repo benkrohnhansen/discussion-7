@@ -166,9 +166,9 @@ of the above array and vector the following to ways.
 For #1, You can use `std::multiplies<int>()` as the argument for the binary operation.
 
 See:
-- https://en.cppreference.com/w/cpp/algorithm/transform (definition 3)
-- https://en.cppreference.com/w/cpp/algorithm/accumulate (definition 1)
-- https://en.cppreference.com/w/cpp/algorithm/inner_product (definition 1)
+- https://en.cppreference.com/w/cpp/algorithm/transform 
+- https://en.cppreference.com/w/cpp/algorithm/accumulate 
+- https://en.cppreference.com/w/cpp/algorithm/inner_product
 
 ## One More Question
 
